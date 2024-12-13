@@ -1,0 +1,298 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CacheSimulatorWebApp</name>
+    </assembly>
+    <members>
+        <member name="M:CacheSimulatorWebApp.Models.Cache.Read(CacheSimulatorWebApp.Models.Instruction)">
+            <summary>
+            Read a block of data from memory to cache
+            </summary>
+            <param name="address">Memory address for data to be read</param>
+            <returns>Block of memory (CacheLine) read</returns>
+        </member>
+        <member name="M:CacheSimulatorWebApp.Models.Cache.Write(System.Int32,System.Byte[])">
+            <summary>
+            Write a block of data to cache
+            </summary>
+            <param name="address">Memory address for data to be written</param>
+            <param name="data">Data to write to cache</param>
+        </member>
+        <member name="M:CacheSimulatorWebApp.Models.Cache.Load(System.Int32,System.Byte[])">
+            <summary>
+            Load a block of memory in the cache
+            </summary>
+            <param name="address">Memory address for data to load in the cache</param>
+            <param name="data">Block of data from memory to load in the cache</param>
+        </member>
+        <member name="T:CacheSimulatorWebApp.Models.Instruction">
+            <summary>
+            Represents a memory instruction, parsed into its tag, index, offset, and full memory address. 
+            This class is used in memory systems, particularly in cache simulations, to break down the 
+            instruction's binary representation for cache and memory operations.
+            </summary>
+        </member>
+        <member name="P:CacheSimulatorWebApp.Models.Instruction.Tag">
+            <summary>
+            Gets the tag of the instruction, calculated as the portion of the instruction 
+            that remains after subtracting the offset and index sizes.
+            </summary>
+        </member>
+        <member name="P:CacheSimulatorWebApp.Models.Instruction.Index">
+            <summary>
+            Gets the index of the instruction, which specifies the cache line within 
+            the cache where the memory block might be located.
+            </summary>
+        </member>
+        <member name="P:CacheSimulatorWebApp.Models.Instruction.AddressInMemory">
+            <summary>
+            Gets the full memory block composing of tag and index
+            </summary>
+        </member>
+        <member name="P:CacheSimulatorWebApp.Models.Instruction.BlockSize">
+            <summary>
+            Gets the size of the block (cache line)
+            </summary>
+        </member>
+        <member name="M:CacheSimulatorWebApp.Models.Instruction.#ctor(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CacheSimulatorWebApp.Models.Instruction"/> class, parsing 
+            the given instruction integer to extract the tag, index, and offset based on 
+            the provided cache and memory sizes.
+            </summary>
+            <param name="instruction">
+            The integer representation of the instruction. This value is converted to a 
+            binary string and parsed to derive the tag, index, and offset components.
+            </param>
+            <param name="cacheSize">
+            The size of the cache, used to determine the number of bits needed for the 
+            index and offset in the binary representation of the instruction.
+            </param>
+            <param name="memorySize">
+            The size of the memory, used to determine the total number of bits required 
+            for the binary representation of the instruction.
+            </param>
+            <param name="blockSize">
+            The size of the block of data (cache line), used to divide the memory into
+            blockSize blocks
+            </param>
+        </member>
+        <member name="M:CacheSimulatorWebApp.Models.Instruction.ToString">
+            <summary>
+            Returns a string that represents the current instruction object, including 
+            its tag, index and offset.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:CacheSimulatorWebApp.Models.Memory">
+            <summary>
+            Represents a simulated memory component for use in a cache simulation. 
+            Stores a fixed-size array of data and provides functionality to read and write 
+            data blocks aligned by a specified block size.
+            </summary>
+            <param name="size">
+            Represents the size of the memory, multiple of 2
+            </param>
+            <param name="blockSize">
+            Represents the size of the memory block
+            </param>
+            <example>
+            The following example demonstrates how to create a memory instance and retrieve a block:
+            <code>
+            var memory = new Memory(1024, 16);
+            var block = memory.GetBlock(32);
+            </code>
+            </example>
+        </member>
+        <member name="M:CacheSimulatorWebApp.Models.Memory.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Represents a simulated memory component for use in a cache simulation. 
+            Stores a fixed-size array of data and provides functionality to read and write 
+            data blocks aligned by a specified block size.
+            </summary>
+            <param name="size">
+            Represents the size of the memory, multiple of 2
+            </param>
+            <param name="blockSize">
+            Represents the size of the memory block
+            </param>
+            <example>
+            The following example demonstrates how to create a memory instance and retrieve a block:
+            <code>
+            var memory = new Memory(1024, 16);
+            var block = memory.GetBlock(32);
+            </code>
+            </example>
+        </member>
+        <member name="P:CacheSimulatorWebApp.Models.Memory.BlockSize">
+            <summary>
+            Gets the block size in bytes, which is the size of each data block within the memory.
+            </summary>
+        </member>
+        <member name="M:CacheSimulatorWebApp.Models.Memory.GetBlock(System.Int32)">
+            <summary>
+            Retrieves a block of data from memory starting at the specified address, 
+            aligned to the nearest lower multiple of <see cref="P:CacheSimulatorWebApp.Models.Memory.BlockSize"/>.
+            </summary>
+            <param name="address">
+            The starting address in memory from which the block will be retrieved.
+            This address is aligned to the nearest lower multiple of <see cref="P:CacheSimulatorWebApp.Models.Memory.BlockSize"/>.
+            </param>
+            <returns>
+            A <see cref="T:System.Byte"/> array containing the block of data retrieved from memory. 
+            The length of this array matches <see cref="P:CacheSimulatorWebApp.Models.Memory.BlockSize"/>.
+            </returns>
+        </member>
+        <member name="M:CacheSimulatorWebApp.Models.Memory.SetBlock(System.Int32,System.Byte[])">
+            <summary>
+            Writes a block of data to memory at the specified address, aligning the address 
+            to the start of the memory block defined by the <see cref="P:CacheSimulatorWebApp.Models.Memory.BlockSize"/>.
+            </summary>
+            <param name="address">The starting address in memory where the block will be written.
+            This address is aligned to the nearest multiple of <see cref="P:CacheSimulatorWebApp.Models.Memory.BlockSize"/></param>
+            <param name="block">The data block to be written to memory. The size of this block should match
+            the <see cref="P:CacheSimulatorWebApp.Models.Memory.BlockSize"/> to ensure correct alignment and memory storage.</param>
+            <remarks>
+            This method aligns the provided <paramref name="address"/> to the nearest 
+            lower multiple of <see cref="P:CacheSimulatorWebApp.Models.Memory.BlockSize"/> to ensure consistent block alignment 
+            within memory. The <paramref name="block"/> data is then copied into the 
+            <c>Data</c> array starting at this aligned address.
+            </remarks>
+        </member>
+        <member name="M:CacheSimulatorWebApp.Models.Memory.ToString">
+            <summary>
+            Returns a string that represents the current memory object, including 
+            its size, block size, and data content.
+            </summary>
+            <returns>String including its size, block size, and data content.</returns>
+        </member>
+        <member name="T:CacheSimulatorWebApp.Models.Policy.Mapping.DirectMapping">
+            <summary>
+            Implements a direct-mapping cache policy, where each block in memory is mapped 
+            to a single cache line. This class handles cache operations with a specific 
+            write policy and write-on-miss behavior.
+            </summary>
+            <param name="cacheLines">
+            An array of <see cref="T:CacheSimulatorWebApp.Models.CacheLine"/> objects representing the cache lines 
+            in the direct-mapped cache.
+            </param>
+            <param name="writePolicy">
+            The <see cref="T:CacheSimulatorWebApp.Models.Policy.Write.IWritePolicy"/> used for handling writes to cache lines on cache hits.
+            </param>
+            <param name="writeOnMiss">The <see cref="T:CacheSimulatorWebApp.Models.Policy.Write.IWritePolicy"/> used for handling writes to cache and memory 
+            when a cache miss occurs.
+            </param>
+            <param name="memory">
+            The <see cref="P:CacheSimulatorWebApp.Models.Policy.Mapping.DirectMapping.Memory"/> object representing main memory from which blocks 
+            are loaded into the cache on cache misses.
+            </param>
+        </member>
+        <member name="M:CacheSimulatorWebApp.Models.Policy.Mapping.DirectMapping.#ctor(CacheSimulatorWebApp.Models.CacheLine[],CacheSimulatorWebApp.Models.Policy.Write.IWritePolicy,CacheSimulatorWebApp.Models.Policy.Write.IWritePolicy,CacheSimulatorWebApp.Models.Memory,CacheSimulatorWebApp.Statistics.Statistics)">
+            <summary>
+            Implements a direct-mapping cache policy, where each block in memory is mapped 
+            to a single cache line. This class handles cache operations with a specific 
+            write policy and write-on-miss behavior.
+            </summary>
+            <param name="cacheLines">
+            An array of <see cref="T:CacheSimulatorWebApp.Models.CacheLine"/> objects representing the cache lines 
+            in the direct-mapped cache.
+            </param>
+            <param name="writePolicy">
+            The <see cref="T:CacheSimulatorWebApp.Models.Policy.Write.IWritePolicy"/> used for handling writes to cache lines on cache hits.
+            </param>
+            <param name="writeOnMiss">The <see cref="T:CacheSimulatorWebApp.Models.Policy.Write.IWritePolicy"/> used for handling writes to cache and memory 
+            when a cache miss occurs.
+            </param>
+            <param name="memory">
+            The <see cref="P:CacheSimulatorWebApp.Models.Policy.Mapping.DirectMapping.Memory"/> object representing main memory from which blocks 
+            are loaded into the cache on cache misses.
+            </param>
+        </member>
+        <member name="M:CacheSimulatorWebApp.Models.Policy.Mapping.DirectMapping.Read(CacheSimulatorWebApp.Models.Instruction)">
+            <summary>
+            Reads data from the cache at a specified index and tag. If the data is not found 
+            (cache miss), it loads the data from memory, updates the cache line, and handles 
+            any necessary write-back operations.
+            </summary>
+            <param name="instruction">
+            The <see cref="T:CacheSimulatorWebApp.Models.Instruction"/> containing the index, tag, and memory address 
+            used to locate and read data from the cache.
+            </param>
+            <returns>
+            The <see cref="T:CacheSimulatorWebApp.Models.CacheLine"/> containing the data retrieved from the cache or memory.
+            </returns>
+        </member>
+        <member name="M:CacheSimulatorWebApp.Models.Policy.Mapping.DirectMapping.Write(CacheSimulatorWebApp.Models.Instruction)">
+            <summary>
+            Attempts to write data to the cache using the specified write policy. 
+            Handles cache hits, writes on miss, and write-back operations if the cache line is dirty.
+            </summary>
+            <param name="instruction">
+            The <see cref="T:CacheSimulatorWebApp.Models.Instruction"/> containing the index, tag, and memory address 
+            information for the write operation.
+            </param>
+            <returns>
+            <c>true</c> if the write operation is a cache hit; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="T:CacheSimulatorWebApp.Models.Policy.Write.IWritePolicy">
+            <summary>
+            Represents an interface for cache writing policies in a cache memory simulation.
+            Defines the behavior of data writing operations between the cache and main memory.
+            </summary>
+            <remarks>
+            Different writing policies, such as Write-Through, Write-Back, Write-On-Allocate and Write-Around
+            implement this interface to specify how and when data is written to the cache and main memory. 
+            These policies affect data consistency, performance, and cache management in the simulation.
+            </remarks>
+        </member>
+        <member name="M:CacheSimulatorWebApp.Models.Policy.Write.IWritePolicy.Write(CacheSimulatorWebApp.Models.Instruction,System.Int32,CacheSimulatorWebApp.Models.CacheLine,CacheSimulatorWebApp.Models.Memory)">
+            <summary>
+            Defines the method to handle writing data to the cache and memory 
+            according to a specific write policy.
+            </summary>
+            <param name="instruction">
+            The <see cref="T:CacheSimulatorWebApp.Models.Instruction"/> that contains the data to be written and relevant addressing information.
+            </param>
+            <param name="address">
+            The memory address where the data is to be written.
+            This address may be used to determine the location in the cache and/or memory.
+            </param>
+            <param name="cacheLine">
+            The <see cref="T:CacheSimulatorWebApp.Models.CacheLine"/> object representing the cache line where data may be written 
+            according to the policy.
+            </param>
+            <param name="memory">
+            The <see cref="T:CacheSimulatorWebApp.Models.Memory"/> object representing the main memory, which may be written to 
+            depending on the write policy (e.g., for Write-Through or Write-Back policies).
+            </param>
+        </member>
+        <member name="M:CacheSimulatorWebApp.Models.Policy.Write.WriteOnAllocate.Write(CacheSimulatorWebApp.Models.Instruction,System.Int32,CacheSimulatorWebApp.Models.CacheLine,CacheSimulatorWebApp.Models.Memory)">
+            <summary>
+            
+            </summary>
+            <param name="instruction"></param>
+            <param name="address"></param>
+            <param name="cacheLine"></param>
+            <param name="memory"></param>
+        </member>
+        <member name="M:CacheSimulatorWebApp.Models.WriteAround.Write(CacheSimulatorWebApp.Models.Instruction,System.Int32,CacheSimulatorWebApp.Models.CacheLine,CacheSimulatorWebApp.Models.Memory)">
+            <summary>
+            
+            </summary>
+            <param name="instruction"></param>
+            <param name="address"></param>
+            <param name="cacheLine"></param>
+            <param name="memory"></param>
+        </member>
+        <member name="M:CacheSimulatorWebApp.Models.WriteThrough.Write(CacheSimulatorWebApp.Models.Instruction,System.Int32,CacheSimulatorWebApp.Models.CacheLine,CacheSimulatorWebApp.Models.Memory)">
+            <summary>
+            
+            </summary>
+            <param name="address"></param>
+            <param name="instruction"></param>
+            <param name="cacheLine"></param>
+            <param name="memory"></param>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,246 @@
+﻿@page
+@using CacheSimulatorWebApp.Models
+@using CacheSimulatorWebApp.Models.Policy.Mapping
+@using CacheSimulatorWebApp.Models.Policy.Write
+@using CacheSimulatorWebApp.Statistics
+
+
+@{
+    const int memorySize = 2048;
+    const int cacheSize = 16;
+    const int blockSize = 4;
+    const int nWays = 4;
+    var memory = new Memory(memorySize, blockSize);
+    Console.WriteLine(memory);
+    var instructions = new Instruction[30];
+    int[] instr = [
+        0x7ff, 0xec, 0x3e4, 0x4b5, 0x316, 0x10f, 0x113, 0x360, 0x49, 0x217,
+        0x3d4, 0x34d, 0x622, 0x5e2, 0x5c5, 0x314, 0x48, 0x4dd, 0x7fe, 0x371,
+        0x5f0, 0x371, 0x25c, 0x150, 0x329, 0x4af, 0x2a9, 0x163, 0x16b, 0xfa
+    ];
+    for (var i = 0; i < 30; i++)
+    {
+        instructions[i] = new Instruction(instr[i], cacheSize, memorySize, blockSize);
+    }
+    
+    var cacheLines = new CacheLine[cacheSize / blockSize];
+    for (var i = 0; i < cacheSize / blockSize; i++)
+    {
+        cacheLines[i] = new CacheLine();
+    }
+    
+    IWritePolicy writePolicy = new WriteBack();
+    IWritePolicy writeOnMiss = new WriteOnAllocate();
+    IReplacementPolicy replacementPolicy = new LRU();
+    var statistics = new Statistics();
+    IMappingPolicy mappingPolicy = new FullyAssociativeMapping(cacheLines, writePolicy, writeOnMiss, memory, replacementPolicy, statistics);
+    for (var i = 0; i < 10; i++)
+    {
+        mappingPolicy.Read(instructions[i]);
+        // Console.WriteLine($"{instr[i]:X}: {instructions[i]}");
+        // Console.WriteLine($"Step {i + 1} complete. Press Enter to continue...");
+        // Console.ReadLine(); // Waits for Enter key
+        
+        // for (var j = 0; j < cacheSize / blockSize; j++)
+        // {
+        //     Console.WriteLine(cacheLines[j]);
+        // }
+    }
+    
+
+    for (var i = 10; i < instr.Length; i++)
+    {
+        mappingPolicy.Write(instructions[i]);
+        Console.WriteLine($"{instr[i]:X}: {instructions[i]}");
+        Console.WriteLine($"Step {i + 1} complete. Press Enter to continue...");
+        Console.ReadLine();
+        
+        for (var j = 0; j < cacheSize / blockSize; j++)
+        {
+            Console.WriteLine(cacheLines[j]);
+        }
+        
+        Console.WriteLine(memory);
+    }
+    for (var j = 0; j < cacheSize / blockSize; j++)
+    {
+        Console.WriteLine(cacheLines[j]);
+    }
+    Console.WriteLine(statistics.GetHitRate());
+
+    ViewData["Title"] = "Home page";
+}
+
+
+
+
+<div style="display: flex; gap: 30px; justify-content: space-between;">
+    <!-- Left Section -->
+    <div class="container">
+        <div class="row mb-3">
+            <div class="col-md-4 d-flex align-items-center">
+                <p class="mb-0 me-1">Replacement policy (not yet implemented):</p>
+            </div>
+            <div class="col-md-8">
+                @{
+                List<SelectListItem> replacementPoliciesList = new List<SelectListItem>
+                {
+                new SelectListItem { Text = "LRU", Value = "LRU" },
+                new SelectListItem { Text = "FIFO", Value = "FIFO" },
+                new SelectListItem { Text = "Random", Value = "Random" }
+                };
+                }
+                @Html.DropDownList("ReplacePolicy", replacementPoliciesList, new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-4 d-flex align-items-center">
+                <p class="mb-0 me-1">Write policy:</p>
+            </div>
+            <div class="col-md-8">
+                @{
+                List<SelectListItem> writePoliciesList = new List<SelectListItem>
+                {
+                new SelectListItem { Text = "Write-back", Value = "Write-back" },
+                new SelectListItem { Text = "Write-through", Value = "Write-through" }
+                };
+                }
+                @Html.DropDownList("WritePolicy", writePoliciesList, new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-4 d-flex align-items-center">
+                <p class="mb-0 me-1">Write policy on miss:</p>
+            </div>
+            <div class="col-md-8">
+                @{
+                List<SelectListItem> writePoliciesOnMissList = new List<SelectListItem>
+                {
+                new SelectListItem { Text = "Write-on-allocate", Value = "Write-on-allocate" },
+                new SelectListItem { Text = "Write-around", Value = "Write-around" }
+                };
+                }
+                @Html.DropDownList("WriteOnMissPolicy", writePoliciesOnMissList, new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Section -->
+    <div class="container">
+        <div class="row mb-3">
+            <div class="col-md-4 d-flex align-items-center">
+                <p class="mb-0 me-1">Memory size:</p>
+            </div>
+            <div class="col-md-8">
+                @{
+                List<SelectListItem> memorySizeList = new List<SelectListItem>
+                {
+                new SelectListItem { Text = "1024", Value = "1024" },
+                new SelectListItem { Text = "2048", Value = "2048" },
+                new SelectListItem { Text = "4096", Value = "4096" }
+                };
+                }
+                @Html.DropDownList("MemorySize", memorySizeList, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-4 d-flex align-items-center">
+                <p class="mb-0 me-1">Cache size:</p>
+            </div>
+            <div class="col-md-8">
+                @{
+                List<SelectListItem> cacheSizeList = new List<SelectListItem>
+                {
+                new SelectListItem { Text = "16", Value = "16" },
+                new SelectListItem { Text = "32", Value = "32" },
+                new SelectListItem { Text = "64", Value = "64" }
+                };
+                }
+                @Html.DropDownList("CacheSize", cacheSizeList, new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Submit Button -->
+<div class="row mt-3">
+    <div class="col-md-2"></div>
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-primary">Save Settings</button>
+    </div>
+</div>
+
+@* @model CacheSettingsViewModel *@
+@* <form method="post" asp-controller="Home"> *@
+@*     @Html.AntiForgeryToken() *@
+@* *@
+@*     <div class="text-center"> *@
+@*         <h1 class="display-4">Cache simulator</h1> *@
+@*     </div> *@
+@*     <div style="display: flex; justify-content: space-between;"> *@
+@*         <div class="container"> *@
+@*             <!-- Replacement Policy Dropdown --> *@
+@*             $1$ <div class="row mb-3"> #1# *@
+@*             $1$     <div class="col-md-2"> #1# *@
+@*             $1$         <p class="mb-0">Replacement policy (not yet implemented):</p> #1# *@
+@*             $1$     </div> #1# *@
+@*             $1$     <div class="col-md-2"> #1# *@
+@*             $1$         @Html.DropDownListFor(m => m.ReplacementPolicy, (IEnumerable<SelectListItem>)ViewData["ReplacementPolicies"], new { @class = "form-control" }) #1# *@
+@*             $1$     </div> #1# *@
+@*             $1$ </div> #1# *@
+@* *@
+@*             <!-- Write Policy Dropdown --> *@
+@*             <div class="row mb-3"> *@
+@*                 <div class="col-md-2"> *@
+@*                     <p class="mb-0">Write policy:</p> *@
+@*                 </div> *@
+@*                 <div class="col-md-2"> *@
+@*                     @Html.DropDownListFor(m => m.WritePolicy, (IEnumerable<SelectListItem>)ViewBag.WritePolicies, new { @class = "form-control" }) *@
+@*                 </div> *@
+@*             </div> *@
+@* *@
+@*             <!-- Write Policy on Miss Dropdown --> *@
+@*             <div class="row mb-3"> *@
+@*                 <div class="col-md-2"> *@
+@*                     <p class="mb-0">Write policy on miss:</p> *@
+@*                 </div> *@
+@*                 <div class="col-md-2"> *@
+@*                     @Html.DropDownListFor(m => m.WriteOnMissPolicy, (IEnumerable<SelectListItem>)ViewBag.WritePoliciesOnMiss, new { @class = "form-control" }) *@
+@*                 </div> *@
+@*             </div> *@
+@*         </div> *@
+@* *@
+@*         <div class="container"> *@
+@*             <!-- Memory Size Dropdown --> *@
+@*             <div class="row mb-3"> *@
+@*                 <div class="col-md-2"> *@
+@*                     <p class="mb-0">Memory size:</p> *@
+@*                 </div> *@
+@*                 <div class="col-md-2"> *@
+@*                     @Html.DropDownListFor(m => m.MemorySize, (IEnumerable<SelectListItem>)ViewBag.MemorySizes, new { @class = "form-control" }) *@
+@*                 </div> *@
+@*             </div> *@
+@* *@
+@*             <!-- Cache Size Dropdown --> *@
+@*             <div class="row mb-3"> *@
+@*                 <div class="col-md-2"> *@
+@*                     <p class="mb-0">Cache size:</p> *@
+@*                 </div> *@
+@*                 <div class="col-md-2"> *@
+@*                     @Html.DropDownListFor(m => m.CacheSize, (IEnumerable<SelectListItem>)ViewBag.CacheSizes, new { @class = "form-control" }) *@
+@*                 </div> *@
+@*             </div> *@
+@*         </div> *@
+@*     </div> *@
+@* *@
+@*     <!-- Submit Button --> *@
+@*     <div class="row mt-3"> *@
+@*         <div class="col-md-2"></div> *@
+@*         <div class="col-md-2"> *@
+@*             <button type="submit" class="btn btn-primary">Save Settings</button> *@
+@*         </div> *@
+@*     </div> *@
+@* </form> *@
