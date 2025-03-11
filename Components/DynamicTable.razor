@@ -1,0 +1,55 @@
+﻿<h3>DynamicTable</h3>
+
+@code {
+    private List<TableRow> TableData = new();
+
+    private void GenerateData()
+    {
+        // Replace this with your actual data generation logic
+        TableData = new List<TableRow>
+        {
+            new TableRow { Column1 = "Row 1 Col 1", Column2 = "Row 1 Col 2", Column3 = "Row 1 Col 3" },
+            new TableRow { Column1 = "Row 2 Col 1", Column2 = "Row 2 Col 2", Column3 = "Row 2 Col 3" },
+        };
+    }
+
+    private class TableRow
+    {
+        public string Column1 { get; set; }
+        public string Column2 { get; set; }
+        public string Column3 { get; set; }
+    }
+}
+
+<div>
+    <button class="btn btn-primary" @onclick="GenerateData">Generate Data</button>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Column 1</th>
+            <th>Column 2</th>
+            <th>Column 3</th>
+        </tr>
+        </thead>
+        <tbody>
+        @if (TableData.Any())
+        {
+            @foreach (var row in TableData)
+            {
+                <tr>
+                    <td>@row.Column1</td>
+                    <td>@row.Column2</td>
+                    <td>@row.Column3</td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="3" class="text-center">No data available</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

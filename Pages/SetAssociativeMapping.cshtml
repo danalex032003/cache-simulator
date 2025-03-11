@@ -1,0 +1,381 @@
+﻿@page
+@using CacheSimulatorWebApp.Util
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model CacheSimulatorWebApp.Pages.SetAssociativeMappingModel
+
+@{
+    ViewData["Title"] = "2-way Set Associative Mapping";
+}
+<style>
+    .bordered-div {
+        border: 2px solid black;
+        padding: 10px;
+    }
+</style>
+
+<style>
+    .subtitle-h4 {
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+</style>
+
+<style>
+    .scrollable-div {
+        width: 200px; /* Fixed width */
+        height: 400px; /* Fixed height */
+        border: 1px solid #ccc; /* Optional border for better visibility */
+        padding: 10px; /* Optional padding */
+        overflow-y: auto; /* Adds vertical scrollbar when content overflows */
+        overflow-x: hidden; /* Prevents horizontal scrollbar */
+        background-color: #f9f9f9; /* Optional background color */
+    }
+</style>
+
+<style>
+    .selected-memory-block-p {
+        background-color: #0dcaf0;
+        padding: 5px;
+    }
+</style>
+
+<div class="d-flex justify-content-center mb-3">
+    <h2>@ViewData["Title"]</h2>
+</div>
+
+
+<form method="post">
+
+    @Html.AntiForgeryToken()
+
+    <div class="container">
+        <h4 class="subtitle-h4">Cache settings:</h4>
+        <div class="d-flex justify-content-between align-items-start flex-wrap">
+            <!-- Left Column -->
+            <div class="col-md-3 mb-4">
+                <!-- Write Policy Dropdown -->
+                <div class="row mb-3">
+                    <div class="col-6 d-flex align-items-center">
+                        <p class="mb-0">Write policy:</p>
+                    </div>
+                    <div class="col-6">
+                        @Html.DropDownListFor(
+                            m => m.SelectedWritePolicyEnum,
+                            new SelectList(Enum.GetValues(typeof(WritePolicyEnum))),
+                            new { @class = "form-control", style = "min-width: 200px;" })
+                    </div>
+                </div>
+
+                <!-- Write Policy on Miss Dropdown -->
+                <div class="row mb-3">
+                    <div class="col-6 d-flex align-items-center">
+                        <p class="mb-0">Write policy on miss:</p>
+                    </div>
+                    <div class="col-6">
+                        @Html.DropDownListFor(
+                            m => m.SelectedWriteOnMissPolicyEnum,
+                            new SelectList(Enum.GetValues(typeof(WriteOnMissPolicyEnum))),
+                            new { @class = "form-control", style = "min-width: 200px;" })
+                    </div>
+                </div>
+            </div>
+
+            <!-- Middle Column -->
+            <div class="col-md-3 mb-4">
+                <!-- Replacement Policy Dropdown -->
+                <div class="row mb-3">
+                    <div class="col-6 d-flex align-items-center">
+                        <p class="mb-0 ms-5">Replacement policy:</p>
+                    </div>
+                    <div class="col-6">
+                        @Html.DropDownListFor(
+                            m => m.SelectedReplacementPolicyEnum,
+                            new SelectList(Enum.GetValues(typeof(ReplacementPolicyEnum))),
+                            new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="col-md-3 mb-4">
+                <!-- Cache Size Text Input -->
+                <div class="row mb-3">
+                    <div class="col-6 d-flex align-items-center">
+                        <p class="mb-0">Cache size:</p>
+                    </div>
+                    <div class="col-6">
+                        @Html.TextBoxFor(
+                            m => m.SelectedCacheSize,
+                            new { @class = "form-control", placeholder = "Power of 2" })
+                    </div>
+                </div>
+
+                <!-- Memory Size Text Input -->
+                <div class="row mb-3">
+                    <div class="col-6 d-flex align-items-center">
+                        <p class="mb-0">Memory size:</p>
+                    </div>
+                    <div class="col-6">
+                        @Html.TextBoxFor(
+                            m => m.SelectedMemorySize,
+                            new { @class = "form-control", placeholder = "Power of 2" })
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="col-md-2 mb-4 d-flex align-items-start">
+                <button type="submit" asp-page-handler="SubmitCacheSettings" class="btn btn-primary w-100">Submit settings</button>
+            </div>
+        </div>
+
+
+
+        <!-- Instruction Section -->
+        <div class="mb-3" style="margin-left: 0; padding-left: 0;">
+            <div class="d-flex justify-content-between">
+                <div class="col" style="max-width: 400px;">
+                    <h4 class="subtitle-h4">Instruction:</h4>
+
+                    <!-- Radio buttons for instruction and current address -->
+                    <div class="d-flex justify-content-start mb-3">
+                        <div class="d-flex me-3">
+                            <div class="me-3">
+                                @Html.RadioButtonFor(
+                                    m => m.SelectedInstruction,
+                                    "Read/Load",
+                                    new { @class = "form-check-input", id = "read" })
+                            </div>
+                            <label class="form-check-label" for="read">Read/Load</label>
+                        </div>
+
+                        <div class="d-flex me-3">
+                            <div class="me-3">
+                                @Html.RadioButtonFor(
+                                    m => m.SelectedInstruction,
+                                    "Write/Store",
+                                    new { @class = "form-check-input", id = "write" })
+                            </div>
+                            <label class="form-check-label" for="write">Write/Store</label>
+                        </div>
+
+                        <div>
+                            @Html.TextBoxFor(
+                                m => m.SelectedCurrentAddress,
+                                new
+                                {
+                                    @class = "form-control",
+                                    placeholder = "Hex < memory size"
+                                })
+                        </div>
+                    </div>
+
+                    <div class="mt-3 mb-3">
+                        <label for="SelectedListOfFutureAddresses" class="form-label">Generated Addresses:</label>
+                        @Html.TextBoxFor(
+                            m => m.SelectedListOfFutureAddresses,
+                            new
+                            {
+                                @class = "form-control",
+                                id = "SelectedListOfFutureAddresses",
+                                placeholder = "Not yet implemented"
+                            })
+                    </div>
+
+                    <!-- Address Generation Section -->
+                    <div class="container mb-3" style="max-width: 350px; margin-left: 0; padding-left: 0;">
+                        <div class="d-flex">
+                            <div class="container" style="margin-left: 0; padding-left: 0;">
+                                <div class="d-flex w-auto align-items-center mb-3">
+                                    <div class="me-3">
+                                        <button type="submit" asp-page-handler="GenerateAddresses" class="btn btn-primary">Generate</button>
+                                    </div>
+                                    <div class="d-flex w-auto me-3">
+                                        <div class="me-3">
+                                            @Html.RadioButtonFor(
+                                                m => m.SelectedNumberOfFutureAdresses,
+                                                10,
+                                                new { @class = "form-check-input", id = "10" })
+                                        </div>
+                                        <label class="form-check-label" for="10">10</label>
+                                    </div>
+
+                                    <div class="d-flex w-auto me-3">
+                                        <div class="me-3">
+                                            @Html.RadioButtonFor(
+                                                m => m.SelectedNumberOfFutureAdresses,
+                                                20,
+                                                new { @class = "form-check-input", id = "20" })
+                                        </div>
+                                        <label class="form-check-label" for="20">20</label>
+                                    </div>
+
+                                    <div class="d-flex w-auto me-3">
+                                        <div class="me-3">
+                                            @Html.RadioButtonFor(
+                                                m => m.SelectedNumberOfFutureAdresses,
+                                                30,
+                                                new { @class = "form-check-input", id = "30" })
+                                        </div>
+                                        <label class="form-check-label" for="30">30</label>
+                                    </div>
+                                </div>
+                                <!-- Reset and Submit Buttons -->
+                                <div class="container" style="margin-left: 0; padding-left: 0; width: 100%;">
+                                    @* <button type="reset" name="action" value="reset" class="btn btn-primary w-100 mb-3"> *@
+                                    @*     Reset *@
+                                    @* </button> *@
+                                    <button
+                                        type="submit"
+                                        asp-page-handler="SubmitInstruction"
+                                        class="btn btn-primary w-100">
+                                        Submit
+                                    </button>
+                                </div>
+                                <div class="container" style="margin-left: 0; padding-left: 0; width: 100%;">
+                                    <p>Hit rate: @Model.HitRate</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="subtitle-h4">Address:</h4>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">TAG</th>
+                            <th scope="col">INDEX</th>
+                            <th scope="col">OFFSET</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @if (Model.AddressTableRows != null && Model.AddressTableRows.Any())
+                        {
+                            foreach (var row in Model.AddressTableRows)
+                            {
+                                <tr>
+                                    <td>@row.Tag</td>
+                                    <td>@row.Offset</td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="3">No data available</td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                    <h4 class="subtitle-h4">Cache table:</h4>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Index</th>
+                            <th scope="col">IsValid</th>
+                            <th scope="col">Tag</th>
+                            <th scope="col">Data</th>
+                            <th scope="col">IsDirty</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @if (Model.FirstCacheLineTableRows != null && Model.FirstCacheLineTableRows.Any())
+                        {
+                            foreach (var row in Model.FirstCacheLineTableRows)
+                            {
+                                <tr>
+                                    <td>@row.Index</td>
+                                    <td>@row.IsValid</td>
+                                    <td>@row.Tag</td>
+                                    <td>@row.Data</td>
+                                    <td>@row.IsDirty</td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="3">No data available</td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Index</th>
+                            <th scope="col">IsValid</th>
+                            <th scope="col">Tag</th>
+                            <th scope="col">Data</th>
+                            <th scope="col">IsDirty</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @if (Model.SecondCacheLineTableRows != null && Model.SecondCacheLineTableRows.Any())
+                        {
+                            foreach (var row in Model.SecondCacheLineTableRows)
+                            {
+                                <tr>
+                                    <td>@row.Index</td>
+                                    <td>@row.IsValid</td>
+                                    <td>@row.Tag</td>
+                                    <td>@row.Data</td>
+                                    <td>@row.IsDirty</td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="3">No data available</td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <h4 class="subtitle-h4">System memory:</h4>
+                    <div id="scrollableDiv" class="scrollable-div">
+                        @if (Model.IsMemoryReady)
+                        {
+                            foreach (var block in Model.ListOfMemoryBlocks)
+                            {
+                                if (Model.CurrentMemoryBlockIndex != -1)
+                                {
+                                    if (block == Model.ListOfMemoryBlocks[Model.CurrentMemoryBlockIndex])
+                                    {
+                                        <p class="selected-memory-block-p">@block</p>
+                                    }
+                                    else
+                                    {
+                                        <p>@block</p>
+                                    }
+                                }
+                                else
+                                {
+                                    <p>@block</p>
+                                }
+                            }
+                        }
+                        @if (!Model.IsMemoryReady)
+                        {
+                            <p>Submit cache settings to generate system memory</p>
+                        }
+                    </div>
+
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            const scrollableDiv = document.getElementById("scrollableDiv");
+                            const selectedBlock = scrollableDiv.querySelector(".selected-memory-block-p");
+                            if (selectedBlock) {
+                                selectedBlock.scrollIntoView({ behavior: "smooth", block: "center" });
+                            }
+                        });
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>

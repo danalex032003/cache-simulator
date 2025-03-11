@@ -6,68 +6,68 @@
 
 
 @{
-    const int memorySize = 2048;
-    const int cacheSize = 16;
-    const int blockSize = 4;
-    const int nWays = 4;
-    var memory = new Memory(memorySize, blockSize);
-    Console.WriteLine(memory);
-    var instructions = new Instruction[30];
-    int[] instr = [
-        0x7ff, 0xec, 0x3e4, 0x4b5, 0x316, 0x10f, 0x113, 0x360, 0x49, 0x217,
-        0x3d4, 0x34d, 0x622, 0x5e2, 0x5c5, 0x314, 0x48, 0x4dd, 0x7fe, 0x371,
-        0x5f0, 0x371, 0x25c, 0x150, 0x329, 0x4af, 0x2a9, 0x163, 0x16b, 0xfa
-    ];
-    for (var i = 0; i < 30; i++)
-    {
-        instructions[i] = new Instruction(instr[i], cacheSize, memorySize, blockSize);
-    }
-    
-    var cacheLines = new CacheLine[cacheSize / blockSize];
-    for (var i = 0; i < cacheSize / blockSize; i++)
-    {
-        cacheLines[i] = new CacheLine();
-    }
-    
-    IWritePolicy writePolicy = new WriteBack();
-    IWritePolicy writeOnMiss = new WriteOnAllocate();
-    IReplacementPolicy replacementPolicy = new LRU();
-    var statistics = new Statistics();
-    IMappingPolicy mappingPolicy = new FullyAssociativeMapping(cacheLines, writePolicy, writeOnMiss, memory, replacementPolicy, statistics);
-    for (var i = 0; i < 10; i++)
-    {
-        mappingPolicy.Read(instructions[i]);
-        // Console.WriteLine($"{instr[i]:X}: {instructions[i]}");
-        // Console.WriteLine($"Step {i + 1} complete. Press Enter to continue...");
-        // Console.ReadLine(); // Waits for Enter key
-        
-        // for (var j = 0; j < cacheSize / blockSize; j++)
-        // {
-        //     Console.WriteLine(cacheLines[j]);
-        // }
-    }
-    
-
-    for (var i = 10; i < instr.Length; i++)
-    {
-        mappingPolicy.Write(instructions[i]);
-        Console.WriteLine($"{instr[i]:X}: {instructions[i]}");
-        Console.WriteLine($"Step {i + 1} complete. Press Enter to continue...");
-        Console.ReadLine();
-        
-        for (var j = 0; j < cacheSize / blockSize; j++)
-        {
-            Console.WriteLine(cacheLines[j]);
-        }
-        
-        Console.WriteLine(memory);
-    }
-    for (var j = 0; j < cacheSize / blockSize; j++)
-    {
-        Console.WriteLine(cacheLines[j]);
-    }
-    Console.WriteLine(statistics.GetHitRate());
-
+    // const int memorySize = 2048;
+    // const int cacheSize = 16;
+    // const int blockSize = 4;
+    // const int nWays = 4;
+    // var memory = new Memory(memorySize, blockSize);
+    // Console.WriteLine(memory);
+    // var instructions = new Instruction[30];
+    // int[] instr = [
+    //     0x7ff, 0xec, 0x3e4, 0x4b5, 0x316, 0x10f, 0x113, 0x360, 0x49, 0x217,
+    //     0x3d4, 0x34d, 0x622, 0x5e2, 0x5c5, 0x314, 0x48, 0x4dd, 0x7fe, 0x371,
+    //     0x5f0, 0x371, 0x25c, 0x150, 0x329, 0x4af, 0x2a9, 0x163, 0x16b, 0xfa
+    // ];
+    // for (var i = 0; i < 30; i++)
+    // {
+    //     instructions[i] = new Instruction(instr[i], cacheSize, memorySize, blockSize);
+    // }
+    //
+    // var cacheLines = new CacheLine[cacheSize / blockSize];
+    // for (var i = 0; i < cacheSize / blockSize; i++)
+    // {
+    //     cacheLines[i] = new CacheLine();
+    // }
+    //
+    // IWritePolicy writePolicy = new WriteBack();
+    // IWritePolicy writeOnMiss = new WriteOnAllocate();
+    // IReplacementPolicy replacementPolicy = new LRU();
+    // var statistics = new Statistics();
+    // IMappingPolicy mappingPolicy = new FullyAssociativeMapping(cacheLines, writePolicy, writeOnMiss, memory, replacementPolicy, statistics);
+    // for (var i = 0; i < 10; i++)
+    // {
+    //     mappingPolicy.Read(instructions[i]);
+    //     // Console.WriteLine($"{instr[i]:X}: {instructions[i]}");
+    //     // Console.WriteLine($"Step {i + 1} complete. Press Enter to continue...");
+    //     // Console.ReadLine(); // Waits for Enter key
+    //     
+    //     // for (var j = 0; j < cacheSize / blockSize; j++)
+    //     // {
+    //     //     Console.WriteLine(cacheLines[j]);
+    //     // }
+    // }
+    //
+    //
+    // for (var i = 10; i < instr.Length; i++)
+    // {
+    //     mappingPolicy.Write(instructions[i]);
+    //     Console.WriteLine($"{instr[i]:X}: {instructions[i]}");
+    //     Console.WriteLine($"Step {i + 1} complete. Press Enter to continue...");
+    //     Console.ReadLine();
+    //     
+    //     for (var j = 0; j < cacheSize / blockSize; j++)
+    //     {
+    //         Console.WriteLine(cacheLines[j]);
+    //     }
+    //     
+    //     Console.WriteLine(memory);
+    // }
+    // for (var j = 0; j < cacheSize / blockSize; j++)
+    // {
+    //     Console.WriteLine(cacheLines[j]);
+    // }
+    // Console.WriteLine(statistics.GetHitRate());
+    //
     ViewData["Title"] = "Home page";
 }
 

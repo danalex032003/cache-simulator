@@ -18,8 +18,20 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = D:\UTCN\An3\SSC\Proiect\CacheSimulatorWebApp
 build_property._RazorSourceGeneratorDebug = 
 
+[D:/UTCN/An3/SSC/Proiect/CacheSimulatorWebApp/Components/DynamicTable.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xEeW5hbWljVGFibGUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/UTCN/An3/SSC/Proiect/CacheSimulatorWebApp/Pages/DirectMapping.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRGlyZWN0TWFwcGluZy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/UTCN/An3/SSC/Proiect/CacheSimulatorWebApp/Pages/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/UTCN/An3/SSC/Proiect/CacheSimulatorWebApp/Pages/FullyAssociativeMapping.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRnVsbHlBc3NvY2lhdGl2ZU1hcHBpbmcuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/UTCN/An3/SSC/Proiect/CacheSimulatorWebApp/Pages/Index.cshtml]
@@ -28,6 +40,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/UTCN/An3/SSC/Proiect/CacheSimulatorWebApp/Pages/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJpdmFjeS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/UTCN/An3/SSC/Proiect/CacheSimulatorWebApp/Pages/SetAssociativeMapping.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2V0QXNzb2NpYXRpdmVNYXBwaW5nLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/UTCN/An3/SSC/Proiect/CacheSimulatorWebApp/Pages/Shared/_ValidationScriptsPartial.cshtml]

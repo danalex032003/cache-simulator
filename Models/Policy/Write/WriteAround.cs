@@ -11,8 +11,12 @@ public class WriteAround : IWritePolicy
     /// <param name="address"></param>
     /// <param name="cacheLine"></param>
     /// <param name="memory"></param>
-    public void Write(Instruction instruction, int address, CacheLine cacheLine, Memory memory)
+    public void Write(Instruction instruction, int address, CacheLine cacheLine, Memory memory, byte[] data)
     {
-        memory.SetBlock(address, cacheLine.Data);
+        if (!cacheLine.IsDirty || cacheLine.IsDirty == null)
+        {
+            memory.SetBlock(address, data);
+        }
+        
     }
 }

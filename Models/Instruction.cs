@@ -11,22 +11,22 @@ public class Instruction
     /// Gets the tag of the instruction, calculated as the portion of the instruction 
     /// that remains after subtracting the offset and index sizes.
     /// </summary>
-    public string Tag { get; } // log2(memorySize) - offset - index
+    public string Tag { get; set; } // log2(memorySize) - offset - index
     /// <summary>
     /// Gets the index of the instruction, which specifies the cache line within 
     /// the cache where the memory block might be located.
     /// </summary>
-    public string Index { get; } // log2(cacheSize/blockSize)
+    public string Index { get; set; } // log2(cacheSize/blockSize)
 
-    private readonly string _offset; // 2 bits
+    public string Offset { get; set; } // 2 bits
     /// <summary>
     /// Gets the full memory block composing of tag and index
     /// </summary>
-    public string AddressInMemory { get; }
+    public string AddressInMemory { get; set; }
     /// <summary>
     /// Gets the size of the block (cache line)
     /// </summary>
-    private int BlockSize { get; }
+    public int BlockSize { get; set; }
     /// <summary>
     /// Initializes a new instance of the <see cref="Instruction"/> class, parsing 
     /// the given instruction integer to extract the tag, index, and offset based on 
@@ -56,7 +56,7 @@ public class Instruction
         const int offsetSize = 2;
         var indexSize = (int)Math.Log2(cacheSize/BlockSize);
         var tagSize = instructionSize - offsetSize - indexSize;
-        _offset = binaryInstruction.Substring(
+        Offset = binaryInstruction.Substring(
             instructionSize - offsetSize, offsetSize);
         Index = binaryInstruction.Substring(
             instructionSize - offsetSize - indexSize, indexSize);
@@ -64,7 +64,9 @@ public class Instruction
             0, tagSize);
         AddressInMemory = Tag + Index;
     }
-    
+
+    public Instruction() { }
+
     /// <summary>
     /// Returns a string that represents the current instruction object, including 
     /// its tag, index and offset.
@@ -72,6 +74,6 @@ public class Instruction
     /// <returns></returns>
     public override string ToString()
     {
-        return $"Instruction: [{Tag} {Index} {_offset}]";
+        return $"Instruction: [{Tag} {Index} {Offset}]";
     }
 }

@@ -9,15 +9,14 @@ public class WriteOnAllocate : IWritePolicy
     /// <param name="address"></param>
     /// <param name="cacheLine"></param>
     /// <param name="memory"></param>
-    public void Write(Instruction instruction, int address, CacheLine cacheLine, Memory memory)
+    public void Write(Instruction instruction, int address, CacheLine cacheLine, Memory memory, byte[] data)
     {
         cacheLine.IsValid = true;
         cacheLine.Tag = Convert.ToInt32(instruction.Tag, 2);
-        if (cacheLine.Data == null || cacheLine.Data.Length != memory.BlockSize)
+        cacheLine.Data = data;
+        if (!cacheLine.IsDirty || cacheLine.IsDirty == null)
         {
-            cacheLine.Data = memory.GetBlock(address);
+            memory.SetBlock(address, data);
         }
-
-        memory.SetBlock(address, cacheLine.Data);
     }
 }

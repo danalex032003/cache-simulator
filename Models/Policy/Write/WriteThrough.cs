@@ -11,9 +11,10 @@ public class WriteThrough : IWritePolicy
     /// <param name="instruction"></param>
     /// <param name="cacheLine"></param>
     /// <param name="memory"></param>
-    public void Write(Instruction instruction, int address, CacheLine cacheLine, Memory memory)
+    public void Write(Instruction instruction, int address, CacheLine cacheLine, Memory memory, byte[] data)
     {
+        cacheLine.Data = data;
         cacheLine.Tag = Convert.ToInt32(instruction.Tag, 2);
-        memory.SetBlock(address, cacheLine.Data);
+        memory.SetBlock(address, data);
     }
 }

@@ -4,27 +4,6 @@
         <name>CacheSimulatorWebApp</name>
     </assembly>
     <members>
-        <member name="M:CacheSimulatorWebApp.Models.Cache.Read(CacheSimulatorWebApp.Models.Instruction)">
-            <summary>
-            Read a block of data from memory to cache
-            </summary>
-            <param name="address">Memory address for data to be read</param>
-            <returns>Block of memory (CacheLine) read</returns>
-        </member>
-        <member name="M:CacheSimulatorWebApp.Models.Cache.Write(System.Int32,System.Byte[])">
-            <summary>
-            Write a block of data to cache
-            </summary>
-            <param name="address">Memory address for data to be written</param>
-            <param name="data">Data to write to cache</param>
-        </member>
-        <member name="M:CacheSimulatorWebApp.Models.Cache.Load(System.Int32,System.Byte[])">
-            <summary>
-            Load a block of memory in the cache
-            </summary>
-            <param name="address">Memory address for data to load in the cache</param>
-            <param name="data">Block of data from memory to load in the cache</param>
-        </member>
         <member name="T:CacheSimulatorWebApp.Models.Instruction">
             <summary>
             Represents a memory instruction, parsed into its tag, index, offset, and full memory address. 
@@ -85,26 +64,6 @@
             <returns></returns>
         </member>
         <member name="T:CacheSimulatorWebApp.Models.Memory">
-            <summary>
-            Represents a simulated memory component for use in a cache simulation. 
-            Stores a fixed-size array of data and provides functionality to read and write 
-            data blocks aligned by a specified block size.
-            </summary>
-            <param name="size">
-            Represents the size of the memory, multiple of 2
-            </param>
-            <param name="blockSize">
-            Represents the size of the memory block
-            </param>
-            <example>
-            The following example demonstrates how to create a memory instance and retrieve a block:
-            <code>
-            var memory = new Memory(1024, 16);
-            var block = memory.GetBlock(32);
-            </code>
-            </example>
-        </member>
-        <member name="M:CacheSimulatorWebApp.Models.Memory.#ctor(System.Int32,System.Int32)">
             <summary>
             Represents a simulated memory component for use in a cache simulation. 
             Stores a fixed-size array of data and provides functionality to read and write 
@@ -187,27 +146,6 @@
             are loaded into the cache on cache misses.
             </param>
         </member>
-        <member name="M:CacheSimulatorWebApp.Models.Policy.Mapping.DirectMapping.#ctor(CacheSimulatorWebApp.Models.CacheLine[],CacheSimulatorWebApp.Models.Policy.Write.IWritePolicy,CacheSimulatorWebApp.Models.Policy.Write.IWritePolicy,CacheSimulatorWebApp.Models.Memory,CacheSimulatorWebApp.Statistics.Statistics)">
-            <summary>
-            Implements a direct-mapping cache policy, where each block in memory is mapped 
-            to a single cache line. This class handles cache operations with a specific 
-            write policy and write-on-miss behavior.
-            </summary>
-            <param name="cacheLines">
-            An array of <see cref="T:CacheSimulatorWebApp.Models.CacheLine"/> objects representing the cache lines 
-            in the direct-mapped cache.
-            </param>
-            <param name="writePolicy">
-            The <see cref="T:CacheSimulatorWebApp.Models.Policy.Write.IWritePolicy"/> used for handling writes to cache lines on cache hits.
-            </param>
-            <param name="writeOnMiss">The <see cref="T:CacheSimulatorWebApp.Models.Policy.Write.IWritePolicy"/> used for handling writes to cache and memory 
-            when a cache miss occurs.
-            </param>
-            <param name="memory">
-            The <see cref="P:CacheSimulatorWebApp.Models.Policy.Mapping.DirectMapping.Memory"/> object representing main memory from which blocks 
-            are loaded into the cache on cache misses.
-            </param>
-        </member>
         <member name="M:CacheSimulatorWebApp.Models.Policy.Mapping.DirectMapping.Read(CacheSimulatorWebApp.Models.Instruction)">
             <summary>
             Reads data from the cache at a specified index and tag. If the data is not found 
@@ -222,7 +160,7 @@
             The <see cref="T:CacheSimulatorWebApp.Models.CacheLine"/> containing the data retrieved from the cache or memory.
             </returns>
         </member>
-        <member name="M:CacheSimulatorWebApp.Models.Policy.Mapping.DirectMapping.Write(CacheSimulatorWebApp.Models.Instruction)">
+        <member name="M:CacheSimulatorWebApp.Models.Policy.Mapping.DirectMapping.Write(CacheSimulatorWebApp.Models.Instruction,System.Byte[])">
             <summary>
             Attempts to write data to the cache using the specified write policy. 
             Handles cache hits, writes on miss, and write-back operations if the cache line is dirty.
@@ -246,7 +184,7 @@
             These policies affect data consistency, performance, and cache management in the simulation.
             </remarks>
         </member>
-        <member name="M:CacheSimulatorWebApp.Models.Policy.Write.IWritePolicy.Write(CacheSimulatorWebApp.Models.Instruction,System.Int32,CacheSimulatorWebApp.Models.CacheLine,CacheSimulatorWebApp.Models.Memory)">
+        <member name="M:CacheSimulatorWebApp.Models.Policy.Write.IWritePolicy.Write(CacheSimulatorWebApp.Models.Instruction,System.Int32,CacheSimulatorWebApp.Models.CacheLine,CacheSimulatorWebApp.Models.Memory,System.Byte[])">
             <summary>
             Defines the method to handle writing data to the cache and memory 
             according to a specific write policy.
@@ -267,7 +205,7 @@
             depending on the write policy (e.g., for Write-Through or Write-Back policies).
             </param>
         </member>
-        <member name="M:CacheSimulatorWebApp.Models.Policy.Write.WriteOnAllocate.Write(CacheSimulatorWebApp.Models.Instruction,System.Int32,CacheSimulatorWebApp.Models.CacheLine,CacheSimulatorWebApp.Models.Memory)">
+        <member name="M:CacheSimulatorWebApp.Models.Policy.Write.WriteOnAllocate.Write(CacheSimulatorWebApp.Models.Instruction,System.Int32,CacheSimulatorWebApp.Models.CacheLine,CacheSimulatorWebApp.Models.Memory,System.Byte[])">
             <summary>
             
             </summary>
@@ -276,7 +214,7 @@
             <param name="cacheLine"></param>
             <param name="memory"></param>
         </member>
-        <member name="M:CacheSimulatorWebApp.Models.WriteAround.Write(CacheSimulatorWebApp.Models.Instruction,System.Int32,CacheSimulatorWebApp.Models.CacheLine,CacheSimulatorWebApp.Models.Memory)">
+        <member name="M:CacheSimulatorWebApp.Models.WriteAround.Write(CacheSimulatorWebApp.Models.Instruction,System.Int32,CacheSimulatorWebApp.Models.CacheLine,CacheSimulatorWebApp.Models.Memory,System.Byte[])">
             <summary>
             
             </summary>
@@ -285,7 +223,7 @@
             <param name="cacheLine"></param>
             <param name="memory"></param>
         </member>
-        <member name="M:CacheSimulatorWebApp.Models.WriteThrough.Write(CacheSimulatorWebApp.Models.Instruction,System.Int32,CacheSimulatorWebApp.Models.CacheLine,CacheSimulatorWebApp.Models.Memory)">
+        <member name="M:CacheSimulatorWebApp.Models.WriteThrough.Write(CacheSimulatorWebApp.Models.Instruction,System.Int32,CacheSimulatorWebApp.Models.CacheLine,CacheSimulatorWebApp.Models.Memory,System.Byte[])">
             <summary>
             
             </summary>

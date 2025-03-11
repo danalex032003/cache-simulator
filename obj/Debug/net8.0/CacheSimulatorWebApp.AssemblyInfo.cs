@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CacheSimulatorWebApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d898c2a781a9996d83a2ea90ddb5be3a380098d9")]
 [assembly: System.Reflection.AssemblyProductAttribute("CacheSimulatorWebApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CacheSimulatorWebApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

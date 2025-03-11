@@ -30,5 +30,5 @@ public interface IWritePolicy
     /// The <see cref="Memory"/> object representing the main memory, which may be written to 
     /// depending on the write policy (e.g., for Write-Through or Write-Back policies).
     /// </param>
-    void Write(Instruction instruction, int address, CacheLine cacheLine, Memory memory);
+    void Write(Instruction instruction, int address, CacheLine cacheLine, Memory memory, byte[] data);
 }

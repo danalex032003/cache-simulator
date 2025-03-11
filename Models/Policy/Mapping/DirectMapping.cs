@@ -21,18 +21,30 @@ namespace CacheSimulatorWebApp.Models.Policy.Mapping;
 /// The <see cref="Memory"/> object representing main memory from which blocks 
 /// are loaded into the cache on cache misses.
 /// </param>
-public class DirectMapping(
-    CacheLine[] cacheLines, 
-    IWritePolicy writePolicy, 
-    IWritePolicy writeOnMiss, 
-    Memory memory, 
-    Statistics.Statistics statistics) : IMappingPolicy
+public class DirectMapping : IMappingPolicy
 {
-    private CacheLine[] CacheLines { get; } = cacheLines;
-    private IWritePolicy WritePolicy { get; } = writePolicy;
-    private IWritePolicy WriteOnMiss { get; } = writeOnMiss;
-    private Memory Memory { get; } = memory;
-    private Statistics.Statistics Statistics { get; } = statistics;
+    public CacheLine[] CacheLines { get; set; }
+    private IWritePolicy WritePolicy { get; set; }
+    private IWritePolicy WriteOnMissPolicy { get; set; }
+    public Memory Memory { get; set; }
+    public Statistics.Statistics Statistics { get; set; }
+
+    public int x = 10;
+    
+    public DirectMapping(
+        CacheLine[] cacheLines,
+        IWritePolicy writePolicy,
+        IWritePolicy writeOnMissPolicy,
+        Memory memory,
+        Statistics.Statistics statistics)
+    {
+        CacheLines = cacheLines;
+        WritePolicy = writePolicy;
+        WriteOnMissPolicy = writeOnMissPolicy;
+        Memory = memory;
+        Statistics = statistics;
+    }
+    public DirectMapping() { }
     
     /// <summary>
     /// Reads data from the cache at a specified index and tag. If the data is not found 
@@ -46,7 +58,7 @@ public class DirectMapping(
     /// <returns>
     /// The <see cref="CacheLine"/> containing the data retrieved from the cache or memory.
     /// </returns>
-    public CacheLine Read(Instruction instruction)
+    public bool Read(Instruction instruction)
     {
         var index = Convert.ToInt32(instruction.Index, 2);
         var tag = Convert.ToInt32(instruction.Tag, 2);
@@ -56,7 +68,7 @@ public class DirectMapping(
         if (cacheLine.IsValid && cacheLine.Tag == tag) 
         {
             Statistics.IncrementHitCount();
-            return cacheLine; // hit
+            return true; // hit
         }
         
         // miss
@@ -67,10 +79,11 @@ public class DirectMapping(
         
         if (cacheLine.IsDirty)
         {
-            Memory.SetBlock(address, cacheLine.Data);
+            //Memory.SetBlock(address, cacheLine.Data);
+            cacheLine.IsDirty = false;
         }
         Statistics.IncrementMissCount();
-        return cacheLine;
+        return false;
     }
     
     /// <summary>
@@ -84,30 +97,52 @@ public class DirectMapping(
     /// <returns>
     /// <c>true</c> if the write operation is a cache hit; otherwise, <c>false</c>.
     /// </returns>
-    public bool Write(Instruction instruction)
+    public bool Write(Instruction instruction, byte[] data)
     {
         var index = Convert.ToInt32(instruction.Index, 2);
         var tag = Convert.ToInt32(instruction.Tag, 2);
         var address = Convert.ToInt32(instruction.AddressInMemory, 2);
         var cacheLine = CacheLines[index];
-        
         if (cacheLine.Tag == tag)
         {
             // hit
-            WritePolicy.Write(instruction, address, cacheLine, Memory);
+            WritePolicy.Write(instruction, address, cacheLine, Memory, data);
             Statistics.IncrementHitCount();
             return true;
         }
-
+        
         if (cacheLine.IsDirty)
         {
             Memory.SetBlock(address, cacheLine.Data);
             cacheLine.IsDirty = false;
         }
-        
         // miss
-        WriteOnMiss.Write(instruction, address, cacheLine, Memory);
+        WriteOnMissPolicy.Write(instruction, address, cacheLine, Memory, data);
         Statistics.IncrementMissCount();
         return false;
+    }
+    public Memory GetMemory()
+    {
+        return Memory;
+    }
+
+    public void SetWritePolicy(IWritePolicy writePolicy)
+    {
+        WritePolicy = writePolicy;
+    }
+
+    public void SetWriteOnMissPolicy(IWritePolicy writeOnMissPolicy)
+    {
+        WriteOnMissPolicy = writeOnMissPolicy;
+    }
+
+    public IWritePolicy GetWritePolicy()
+    {
+        return WritePolicy;
+    }
+
+    public IWritePolicy GetWriteOnMissPolicy()
+    {
+        return WriteOnMissPolicy;
     }
 }

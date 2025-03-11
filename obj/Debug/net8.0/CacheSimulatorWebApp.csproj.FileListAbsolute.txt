@@ -30,3 +30,36 @@ D:\UTCN\An 3\SCC\Proiect\CacheSimulatorWebApp\obj\Debug\net8.0\CacheSimulatorWeb
 D:\UTCN\An 3\SCC\Proiect\CacheSimulatorWebApp\obj\Debug\net8.0\ref\CacheSimulatorWebApp.dll
 D:\UTCN\An 3\SCC\Proiect\CacheSimulatorWebApp\bin\Debug\net8.0\CacheSimulatorWebApp.xml
 D:\UTCN\An 3\SCC\Proiect\CacheSimulatorWebApp\obj\Debug\net8.0\CacheSimulatorWebApp.xml
+D:\UTCN\An3\SSC\Proiect\CacheSimulatorWebApp\bin\Debug\net8.0\appsettings.Development.json
+D:\UTCN\An3\SSC\Proiect\CacheSimulatorWebApp\bin\Debug\net8.0\appsettings.json
+D:\UTCN\An3\SSC\Proiect\CacheSimulatorWebApp\bin\Debug\net8.0\CacheSimulatorWebApp.staticwebassets.runtime.json
+D:\UTCN\An3\SSC\Proiect\CacheSimulatorWebApp\bin\Debug\net8.0\CacheSimulatorWebApp.exe
+D:\UTCN\An3\SSC\Proiect\CacheSimulatorWebApp\bin\Debug\net8.0\CacheSimulatorWebApp.deps.json
+D:\UTCN\An3\SSC\Proiect\CacheSimulatorWebApp\bin\Debug\net8.0\CacheSimulatorWebApp.runtimeconfig.json
+D:\UTCN\An3\SSC\Proiect\CacheSimulatorWebApp\bin\Debug\net8.0\CacheSimulatorWebApp.dll
+D:\UTCN\An3\SSC\Proiect\CacheSimulatorWebApp\bin\Debug\net8.0\CacheSimulatorWebApp.pdb
+D:\UTCN\An3\SSC\Proiect\CacheSimulatorWebApp\bin\Debug\net8.0\CacheSimulatorWebApp.xml
+D:\UTCN\An3\SSC\Proiect\CacheSimulatorWebApp\obj\Debug\net8.0\CacheSimulatorWebApp.GeneratedMSBuildEditorConfig.editorconfig
+D:\UTCN\An3\SSC\Proiect\CacheSimulatorWebApp\obj\Debug\net8.0\CacheSimulatorWebApp.AssemblyInfoInputs.cache
+D:\UTCN\An3\SSC\Proiect\CacheSimulatorWebApp\obj\Debug\net8.0\CacheSimulatorWebApp.AssemblyInfo.cs
+D:\UTCN\An3\SSC\Proiect\CacheSimulatorWebApp\obj\Debug\net8.0\CacheSimulatorWebApp.csproj.CoreCompileInputs.cache
+D:\UTCN\An3\SSC\Proiect\CacheSimulatorWebApp\obj\Debug\net8.0\CacheSimulatorWebApp.MvcApplicationPartsAssemblyInfo.cache
+D:\UTCN\An3\SSC\Proiect\CacheSimulatorWebApp\obj\Debug\net8.0\CacheSimulatorWebApp.RazorAssemblyInfo.cache
+D:\UTCN\An3\SSC\Proiect\CacheSimulatorWebApp\obj\Debug\net8.0\CacheSimulatorWebApp.RazorAssemblyInfo.cs
+D:\UTCN\An3\SSC\Proiect\CacheSimulatorWebApp\obj\Debug\net8.0\CacheSimulatorWebApp.sourcelink.json
+D:\UTCN\An3\SSC\Proiect\CacheSimulatorWebApp\obj\Debug\net8.0\staticwebassets.build.json
+D:\UTCN\An3\SSC\Proiect\CacheSimulatorWebApp\obj\Debug\net8.0\staticwebassets.development.json
+D:\UTCN\An3\SSC\Proiect\CacheSimulatorWebApp\obj\Debug\net8.0\staticwebassets\msbuild.CacheSimulatorWebApp.Microsoft.AspNetCore.StaticWebAssets.props
+D:\UTCN\An3\SSC\Proiect\CacheSimulatorWebApp\obj\Debug\net8.0\staticwebassets\msbuild.build.CacheSimulatorWebApp.props
+D:\UTCN\An3\SSC\Proiect\CacheSimulatorWebApp\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.CacheSimulatorWebApp.props
+D:\UTCN\An3\SSC\Proiect\CacheSimulatorWebApp\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.CacheSimulatorWebApp.props
+D:\UTCN\An3\SSC\Proiect\CacheSimulatorWebApp\obj\Debug\net8.0\staticwebassets.pack.json
+D:\UTCN\An3\SSC\Proiect\CacheSimulatorWebApp\obj\Debug\net8.0\scopedcss\Pages\Shared\_Layout.cshtml.rz.scp.css
+D:\UTCN\An3\SSC\Proiect\CacheSimulatorWebApp\obj\Debug\net8.0\scopedcss\bundle\CacheSimulatorWebApp.styles.css
+D:\UTCN\An3\SSC\Proiect\CacheSimulatorWebApp\obj\Debug\net8.0\scopedcss\projectbundle\CacheSimulatorWebApp.bundle.scp.css
+D:\UTCN\An3\SSC\Proiect\CacheSimulatorWebApp\obj\Debug\net8.0\CacheSimulatorWebApp.dll
+D:\UTCN\An3\SSC\Proiect\CacheSimulatorWebApp\obj\Debug\net8.0\refint\CacheSimulatorWebApp.dll
+D:\UTCN\An3\SSC\Proiect\CacheSimulatorWebApp\obj\Debug\net8.0\CacheSimulatorWebApp.xml
+D:\UTCN\An3\SSC\Proiect\CacheSimulatorWebApp\obj\Debug\net8.0\CacheSimulatorWebApp.pdb
+D:\UTCN\An3\SSC\Proiect\CacheSimulatorWebApp\obj\Debug\net8.0\CacheSimulatorWebApp.genruntimeconfig.cache
+D:\UTCN\An3\SSC\Proiect\CacheSimulatorWebApp\obj\Debug\net8.0\ref\CacheSimulatorWebApp.dll

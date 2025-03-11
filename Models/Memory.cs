@@ -21,17 +21,25 @@ namespace CacheSimulatorWebApp.Models;
 /// </code>
 /// </example>
 
-public class Memory(int size, int blockSize)
+public class Memory
 {
-    private int Size { get; } = size;
+    public int Size { get; set;  }
     
     /// <summary>
     /// Gets the block size in bytes, which is the size of each data block within the memory.
     /// </summary>
-    public int BlockSize { get; } = blockSize;
+    public int BlockSize { get; set; }
     private static readonly Random Random = new();
-    private byte[] Data { get; } = Enumerable.Range(0, size).Select(_ => (byte)Random.Next(0, 256)).ToArray();
+    public byte[] Data { get; set; }
+
+    public Memory(int size, int blockSize)
+    {
+        Size = size;
+        BlockSize = blockSize;
+        Data = Enumerable.Range(0, size).Select(_ => (byte)Random.Next(0, 255)).ToArray();
+    }
     
+    public Memory(){}
     /// <summary>
     /// Retrieves a block of data from memory starting at the specified address, 
     /// aligned to the nearest lower multiple of <see cref="BlockSize"/>.
