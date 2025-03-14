@@ -39,11 +39,8 @@ CacheaSimulator is a web application designed to simulate various cache memory m
 
 ## Screenshots
 
-**Direct Mapping – Read/Load – Cache Miss:**
 ![Direct Mapping – Read/Load – Cache Miss](Picture1.png)
 
-**Direct Mapping – Write/Store – Cache Hit:**
 ![Direct Mapping – Write/Store – Cache Hit](Picture2.png)
 
-**Fully Associative Mapping – Read/Load – Cache Miss:**
 ![Fully Associative Mapping – Read/Load – Cache Miss](Picture3.png)
